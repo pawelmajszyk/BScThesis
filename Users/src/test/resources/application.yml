@@ -1,0 +1,9 @@
+spring:
+  application.name: Users
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+  config:
+    import: optional:configserver:http://${ConfigService:localhost}:8888
+users:
+  secret-key: xD

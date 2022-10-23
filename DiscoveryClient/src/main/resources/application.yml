@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: Discovery
+  config:
+    import: optional:configserver:http://${ConfigService:localhost}:8888
+server:
+  port: 8887

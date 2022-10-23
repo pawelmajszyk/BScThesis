@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  keycloak:
+    depends_on:
+      - keycloackDB
+    container_name: local_keycloak
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: keycloackDB
+      DB_DATABASE: keycloack
+      DB_USER: keycloack
+      DB_PASSWORD: keycloack
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    image: jboss/keycloak
+    ports:
+      - "28080:8080"
+    restart: unless-stopped
+    volumes:
+        - keycloak_data:/data
+        - ./keycloak/providers:/opt/jboss/keycloak/providers
+  postgresdb:
+    image: postgres
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+    ports:
+      - 5432:5432
+  keycloackDB:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=keycloack
+      - POSTGRES_USER=keycloack
+      - POSTGRES_PASSWORD=keycloack
+    ports:
+      - 5433:5432
+    volumes:
+      - keycloak_postgresql:/var/lib/postgresql
+      - keycloak_postgresql_data:/var/lib/postgresql/data
+  localstack:
+    image: localstack/localstack:0.13.3
+    ports:
+      - 4566:4566
+    environment:
+      - SERVICES=s3,sqs,sns,lambda
+      - AWS_DEFAULT_REGION=eu-central-1
+      - EDGE_PORT=4566
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+
+volumes:
+  postgresql:
+  postgresql_data:
+  keycloak_postgresql:
+  keycloak_postgresql_data:
+  keycloak_data:
+

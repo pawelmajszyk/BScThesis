@@ -1,0 +1,51 @@
+app:
+  config:
+    keycloak:
+      url: http://localhost:28080/auth
+      realm: cinema
+
+spring:
+  application:
+    name: Gateway
+  config:
+    import: optional:configserver:http://${ConfigService:localhost}:8888
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      default-filters:
+        - TokenRelay
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak-spring-gateway-client:
+            token-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/token
+            authorization-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/auth
+            user-name-attribute: preferred_username
+            user-info-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/certs
+            user-info-authentication-method: header
+        registration:
+          keycloak-spring-gateway-client:
+            provider: keycloak-spring-gateway-client
+            client-id: gateway
+            client-secret: PxY64IIOcSCUgZDWRdt2rHf8SL41xdX5
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8118/login/oauth2/code/keycloak
+            scope: openid
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${app.config.keycloak.url}/realms/${app.config.keycloak.realm}/protocol/openid-connect/certs
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8887/eureka}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    preferIpAddress: true
+server:
+  port: 8118
