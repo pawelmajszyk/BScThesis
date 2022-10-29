@@ -33,9 +33,9 @@ public class KeycloakConfig {
             return KeycloakBuilder.builder()
                     .grantType(CLIENT_CREDENTIALS)
                     .serverUrl("http://localhost:28080/auth")
-                    .clientId("admin-role")
+                    .clientId("eminem")
                     .realm("cinema")
-                    .clientSecret(NAME_STATIC)
+                    .clientSecret("cceba170-b75c-4025-811e-afbe38245bc1")
                     .build();
         }
 

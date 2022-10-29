@@ -3,8 +3,26 @@ info:
   version: 1.0.0
   title: cinema-users
 paths:
+  /user/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    delete:
+      operationId: deleteUSer
+      description: deletes single user
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
   /admin:
-    post:
+    get:
       operationId: createAdmin
       description: Create user Admin
       requestBody:
@@ -19,6 +37,126 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminResponse'
+  /admin/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleAdmin
+      description: gets single user Admin
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminResponse'
+  /manager:
+    post:
+      operationId: createManager
+      description: Create user Manager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /manager/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleManager
+      description: gets single user Manager
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /worker:
+    post:
+      operationId: createWorker
+      description: Create user Worker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /worker/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleWorker
+      description: gets single user Worker
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /customer:
+    post:
+      operationId: createCustomer
+      description: Create user Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /customer/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleCustomer
+      description: gets single user Customer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
 components:
   schemas:
     UserRequest:
@@ -49,6 +187,21 @@ components:
           type: string
         lastName:
           type: string
+    WorkerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
     Address:
       type: object
       properties:

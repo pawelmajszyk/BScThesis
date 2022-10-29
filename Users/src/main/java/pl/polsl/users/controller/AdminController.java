@@ -30,9 +30,16 @@ public class AdminController implements AdminApi {
     public ResponseEntity<AdminResponseModelApi> createAdmin(UserRequestModelApi adminModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(adminModelApi);
 
-        System.out.println("XD");
-
         userDto = adminService.createAdmin(userDto);
+
+        return new ResponseEntity<>(adminMapper.mapDtoToModelApi(userDto), HttpStatus.OK);
+    }
+
+    @Override
+    @RolesAllowed({"admin"})
+    @CrossOrigin
+    public ResponseEntity<AdminResponseModelApi> getSingleAdmin(Long id) {
+        UserDto userDto = adminService.getSingleAdmin(id);
 
         return new ResponseEntity<>(adminMapper.mapDtoToModelApi(userDto), HttpStatus.OK);
     }

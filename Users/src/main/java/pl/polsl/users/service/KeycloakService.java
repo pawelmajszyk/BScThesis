@@ -12,12 +12,15 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Service;
 import pl.polsl.users.config.KeycloakConfig;
 import pl.polsl.users.dto.UserDto;
+import pl.polsl.users.exceptions.DuplicateUserException;
+import pl.polsl.users.exceptions.UserNotFoundException;
 import pl.polsl.users.mapper.UserMapper;
 import pl.polsl.users.utils.ClientCredentials;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,17 +69,20 @@ public class KeycloakService {
                 .users();
 
         Response response = instance.create(user);
+        String userId = "";
+        try {
+            userId = CreatedResponseUtil.getCreatedId(response);
+            UserResource userResource = instance.get(userId);
 
-        String userId = CreatedResponseUtil.getCreatedId(response);
-        UserResource userResource = instance.get(userId);
+            RoleRepresentation role = KeycloakConfig.getInstance()
+                    .realm("cinema").roles()
+                    .get(userDto.getRole()).toRepresentation();
 
-        RolesResource cinema = KeycloakConfig.getInstance()
-                .realm("cinema").roles();
-
-        // .get("admin").toRepresentation();
-
-//        userResource.roles().realmLevel()
-//                .add(Arrays.asList(testerRealmRole));
+            userResource.roles().realmLevel()
+                    .add(Arrays.asList(role));
+        } catch (Exception e) {
+            throw new DuplicateUserException();
+        }
 
         return userId;
     }
@@ -119,34 +125,34 @@ public class KeycloakService {
 //        return userId;
 //    }
 //
-//    public UserRepresentation deleteUser(String userId) {
-//        UserRepresentation user = getUser(userId);
-//
-//        UsersResource instance = KeycloakConfig.getInstance()
-//                .realm("management")
-//                .users();
-//
-//        user.setRealmRoles(KeycloakConfig.getInstance().realm("management").users()
-//                .get(userId).roles().realmLevel().listAll()
-//                .stream()
-//                .map(RoleRepresentation::getName).collect(Collectors.toList()));
-//
-//        user.setEnabled(false);
-//
-//        instance.get(userId).update(user);
-//
-//        return user;
-//    }
-//
-//    public UserRepresentation getUser(String userId) {
-//        UsersResource instance = KeycloakConfig.getInstance().realm("management").users();
-//
-//        try {
-//            return instance.get(userId).toRepresentation();
-//        }catch (Exception e){
-//            throw new UserNotFoundException("User not found");
-//        }
-//    }
+    public UserRepresentation deleteUser(String userId) {
+        UserRepresentation user = getUser(userId);
+
+        UsersResource instance = KeycloakConfig.getInstance()
+                .realm("cinema")
+                .users();
+
+        user.setRealmRoles(KeycloakConfig.getInstance().realm("cinema").users()
+                .get(userId).roles().realmLevel().listAll()
+                .stream()
+                .map(RoleRepresentation::getName).collect(Collectors.toList()));
+
+        user.setEnabled(false);
+
+        instance.get(userId).update(user);
+
+        return user;
+    }
+
+    public UserRepresentation getUser(String userId) {
+        UsersResource instance = KeycloakConfig.getInstance().realm("cinema").users();
+
+        try {
+            return instance.get(userId).toRepresentation();
+        }catch (Exception e){
+            throw new UserNotFoundException(userId);
+        }
+    }
 //
 //    public FindResultDto<UserDto> getAllAdmins(SearchDto searchDto) {
 //        RoleResource roleResource = KeycloakConfig.getInstance()
