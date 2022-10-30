@@ -62,7 +62,19 @@ public class KeycloakService {
 //            throw new UserNotFoundException("User not found");
 //        }
 //    }
+    public String resetPassword(String userId){
+        UserRepresentation user = getUser(userId);
 
+        UsersResource usersResource = KeycloakConfig.getInstance()
+                .realm("cinema")
+                .users();
+
+        usersResource.get(userId)
+                .executeActionsEmail(Arrays.asList("UPDATE_PASSWORD"));
+
+
+        return user.getUsername();
+    }
     private String addRoleToUser(UserDto userDto, UserRepresentation user) {
         UsersResource instance = KeycloakConfig.getInstance()
                 .realm("cinema")
