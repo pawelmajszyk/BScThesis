@@ -2,8 +2,6 @@ package pl.polsl.users.service;
 
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.CreatedResponseUtil;
-import org.keycloak.admin.client.resource.RoleResource;
-import org.keycloak.admin.client.resource.RolesResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -44,24 +42,28 @@ public class KeycloakService {
         return addRoleToUser(userDto, user);
     }
 
-//    public void updateUser(UserDto userDto, String userId) {
-//        UserRepresentation user = new UserRepresentation();
-//
-//        user.setUsername(userDto.getUsername());
-//        user.setFirstName(userDto.getFirstName());
-//        user.setLastName(userDto.getLastName());
-//        user.setEnabled(true);
-//
-//        UsersResource instance = KeycloakConfig.getInstance()
-//                .realm("cinema")
-//                .users();
-//
-//        try {
-//            instance.get(userId).update(user);
-//        } catch (NotFoundException e){
-//            throw new UserNotFoundException("User not found");
-//        }
-//    }
+    public void updateUser(UserDto userDto, String userId, boolean isSelfUpdate) {
+        UserRepresentation user = new UserRepresentation();
+
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEnabled(true);
+
+        if(isSelfUpdate) {
+            user.setEmail(userDto.getEmail());
+        }
+
+        UsersResource instance = KeycloakConfig.getInstance()
+                .realm("cinema")
+                .users();
+
+        try {
+            instance.get(userId).update(user);
+        } catch (NotFoundException e){
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
     public String resetPassword(String userId){
         UserRepresentation user = getUser(userId);
 

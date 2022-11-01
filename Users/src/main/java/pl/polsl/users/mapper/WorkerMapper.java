@@ -16,10 +16,12 @@ public interface WorkerMapper {
 
     @Mapping(target = "userId", source = "id")
     @Mapping(ignore = true, target = "id")
+    @Mapping(target = "isEnabled", defaultValue = "true")
     Manager mapDtoToManagerEntity(UserDto userDto);
 
     @Mapping(target = "userId", source = "id")
     @Mapping(ignore = true, target = "id")
+    @Mapping(target = "isEnabled", defaultValue = "true")
     Worker mapDtoToWorkerEntity(UserDto userDto);
 
     UserDto mapEntityToDto(Worker worker);

@@ -15,6 +15,7 @@ public interface CustomerMapper {
 
     @Mapping(target = "userId", source = "id")
     @Mapping(ignore = true, target = "id")
+    @Mapping(target = "isEnabled", defaultValue = "true")
     Customer mapDtoToEntity(UserDto userDto);
 
     UserDto mapEntityToDto(Customer customer);

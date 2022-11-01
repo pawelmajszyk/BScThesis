@@ -10,6 +10,7 @@ import pl.polsl.users.dto.UserDto;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = AddressMapper.class)
 public interface UserMapper {
 
+
     UserDto mapModelApiToDto(UserRequestModelApi userRequestModelApi);
 
     @Mapping(target = "username", source = "userRepresentation.username")

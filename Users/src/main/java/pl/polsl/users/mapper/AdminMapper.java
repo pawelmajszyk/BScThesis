@@ -14,6 +14,7 @@ public interface AdminMapper {
 
     @Mapping(target = "userId", source = "id")
     @Mapping(ignore = true, target = "id")
+    @Mapping(target = "isEnabled", defaultValue = "true")
     Admin mapDtoToEntity(UserDto userDto);
 
     UserDto mapEntityToDto(Admin admin);

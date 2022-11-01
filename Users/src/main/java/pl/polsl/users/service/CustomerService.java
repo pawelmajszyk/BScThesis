@@ -2,15 +2,21 @@ package pl.polsl.users.service;
 
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.polsl.users.dto.FindResultDto;
+import pl.polsl.users.dto.SearchDto;
 import pl.polsl.users.dto.UserDto;
 import pl.polsl.users.entity.Customer;
-import pl.polsl.users.entity.Manager;
+import pl.polsl.users.entity.User;
 import pl.polsl.users.exceptions.UserNotFoundException;
 import pl.polsl.users.mapper.CustomerMapper;
 import pl.polsl.users.mapper.UserMapper;
 import pl.polsl.users.repository.CustomerRepository;
+
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +49,36 @@ public class CustomerService {
         UserDto userDto = customerMapper.mapEntityToDto(customer);
 
         return userMapper.mapModelApiToDto(user, userDto);
+    }
+
+    public FindResultDto<UserDto> findCustomers(SearchDto searchDto) {
+        PageRequest pageRequest = PageRequest.of(searchDto.getPage(), Math.toIntExact(searchDto.getLimit()));
+
+        Page<Customer> page = customerRepository.findAll(pageRequest);
+
+        return FindResultDto.<UserDto>builder()
+                .totalCount(page.getTotalElements())
+                .count((long) page.getNumberOfElements())
+                .startElement(searchDto.getLimit() * searchDto.getPage())
+                .results(page.getContent().stream()
+                        .map(customerMapper::mapEntityToDto)
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    public UserDto updateCustomer(UserDto userDto, User user, boolean isSelfUpdate) {
+        Customer mappedCustomer = customerMapper.mapDtoToEntity(userDto);
+        mappedCustomer.setId(user.getId());
+        mappedCustomer.setUserId(user.getUserId());
+
+        customerRepository.save(mappedCustomer);
+
+        userDto.setRole("customer");
+
+        keycloakService.updateUser(userDto, user.getUserId(), isSelfUpdate);
+
+        userDto.setId(user.getUserId());
+
+        return userDto;
     }
 }

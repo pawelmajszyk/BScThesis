@@ -25,4 +25,6 @@ public class User {
     private String lastName;
 
     private String userId;
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isEnabled = true;
 }
