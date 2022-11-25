@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-users
+paths:
+  /cinema:
+    get:
+      summary: Get cinemas by parameters
+      operationId: getCinemas
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: 'result of search process'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CinemaFindResult'
+    post:
+      operationId: createCinema
+      description: creates cinema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CinemaRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cinema'
+
+  /cinema/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getCinemaById
+      description: gets single cinema by id
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cinema'
+    put:
+      operationId: updateCinema
+      description: updates cinema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CinemaRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cinema'
+    delete:
+      operationId: deleteCinema
+      description: deletes cinema
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cinema'
+
+components:
+  schemas:
+    CinemaRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        zipCode:
+          type: string
+    Cinema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        zipCode:
+          type: string
+    CinemaFindResult:
+      type: object
+      properties:
+        startElement:
+          type: integer
+          format: int64
+        totalCount:
+          type: integer
+          format: int64
+        count:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cinema'

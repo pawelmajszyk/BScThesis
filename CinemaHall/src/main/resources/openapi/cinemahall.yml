@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-users
+paths:
+  /{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      summary: Get cinemahalls by cinemaId
+      operationId: getCinemaHalls
+      responses:
+        '200':
+          description: 'cinemaHalls for cinema'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CinemaHall'
+    post:
+      operationId: createCinemaHall
+      description: creates cinemaHall
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CinemaHallRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CinemaHall'
+
+
+components:
+  schemas:
+    CinemaHallRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        xRows:
+          type: integer
+          format: int32
+        yRows:
+          type: integer
+          format: int32
+    CinemaHall:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        cinemaId:
+          type: integer
+          format: int64
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/Seat'
+    Seat:
+      type: object
+      properties:
+        row:
+          type: integer
+          format: int32
+        column:
+          type: integer
+          format: int32
+        seatState:
+          type: object
+          $ref: '#/components/schemas/SeatState'
+    SeatState:
+      type: string
+      enum:
+        - AVAILABLE
+        - UNAVAILABLE
+        - MAINTANCE_SCHEDULED
+
