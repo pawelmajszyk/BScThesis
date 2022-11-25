@@ -20,10 +20,12 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/customer/**").permitAll()
+                .antMatchers("/user/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .cors()
                 .and()

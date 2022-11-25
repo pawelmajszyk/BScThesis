@@ -10,7 +10,7 @@ import lombok.*;
 public class UserDto {
 
     private String username;
-    private String id;
+    private Long id;
     private String email;
     private String password;
     private String firstName;
@@ -18,4 +18,5 @@ public class UserDto {
     private String role;
     private Boolean isEnabled;
     private AddressDto address;
+    private Long cinemaId;
 }

@@ -26,21 +26,33 @@ public class UserController implements UserApi {
     private final WorkerMapper workerMapper;
 
     @Override
-    @RolesAllowed({"admin"})
+    //@RolesAllowed({"admin"})
     @CrossOrigin
-    public ResponseEntity<String> deleteUSer(Long id) {
-        String response = userService.deleteUser(id);
+    public ResponseEntity<WorkerResponseModelApi> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        UserDto userDto = userService.getSelfInfo(currentPrincipalName);
+
+        return new ResponseEntity<>(workerMapper.mapDtoToModelApi(userDto), HttpStatus.OK);
     }
 
     @Override
-    @RolesAllowed({"admin"})
+    //@RolesAllowed({"admin"})
     @CrossOrigin
-    public ResponseEntity<String> resetPassword(Long id) {
-        String response = userService.updatePassword(id, null);
+    public ResponseEntity<WorkerResponseModelApi> deleteUSer(Long id) {
+        String response = userService.deleteUser(id);
 
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new WorkerResponseModelApi().id(id), HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    //@RolesAllowed({"admin"})
+    @CrossOrigin
+    public ResponseEntity<WorkerResponseModelApi> resetPassword(Long id) {
+        UserDto userDto = userService.updatePassword(id, null);
+
+        return new ResponseEntity<>(userMapper.mapDtoToModelApi(userDto), HttpStatus.ACCEPTED);
     }
 
     @Override
@@ -58,12 +70,12 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<String> selfResetPassword() {
+    public ResponseEntity<WorkerResponseModelApi> selfResetPassword() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
 
-        String response = userService.updatePassword(null, currentPrincipalName);
+        UserDto userDto = userService.updatePassword(null, currentPrincipalName);
 
-        return UserApi.super.selfResetPassword();
+        return new ResponseEntity<>(workerMapper.mapDtoToModelApi(userDto), HttpStatus.OK);
     }
 }

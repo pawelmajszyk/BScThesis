@@ -32,13 +32,14 @@ public class WorkerController implements WorkerApi {
     @Override
     @RolesAllowed({"admin"})
     @CrossOrigin
-    public ResponseEntity<WorkerResponseModelApi> createWorker(UserRequestModelApi userRequestModelApi) {
+    public ResponseEntity<WorkerResponseModelApi> createWorker(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 
-        userDto = workerService.createWorker(userDto);
+        userDto = workerService.createWorker(userDto, id);
 
         return new ResponseEntity<>(workerMapper.mapDtoToModelApi(userDto), HttpStatus.OK);
     }
+
 
     @Override
     @RolesAllowed({"admin"})

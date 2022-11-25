@@ -37,7 +37,7 @@ public class AdminService {
         String userId = keycloakService.addUser(userDto);
 
         admin.setUserId(userId);
-        userDto.setId(userId);
+        userDto.setId(admin.getId());
 
         return userDto;
     }
@@ -79,8 +79,14 @@ public class AdminService {
 
         keycloakService.updateUser(userDto, user.getUserId(), isSelfUpdate);
 
-        userDto.setId(user.getUserId());
+        userDto.setId(mappedAdmin.getId());
 
         return userDto;
+    }
+
+    public UserDto mapAdmin(User user) {
+        Admin admin =  (Admin) user;
+
+        return adminMapper.mapEntityToDto(admin);
     }
 }

@@ -1,0 +1,425 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-users
+paths:
+  /user:
+    get:
+      operationId: getUserInfo
+      description: gets self info
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+    patch:
+      operationId: selfResetPassword
+      description: resets password
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+    put:
+      operationId: selfUpdateUser
+      description: upadtes user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /user/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    delete:
+      operationId: deleteUSer
+      description: deletes single user
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+    patch:
+      operationId: resetPassword
+      description: resets password
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+
+  /admin:
+    get:
+      summary: Get admins by parameters
+      operationId: getAdmins
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: 'result of search process'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminFindResult'
+    post:
+      operationId: createAdmin
+      description: Create user Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminResponse'
+  /admin/user/update/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    put:
+      operationId: updateUser
+      description: upadtes user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /admin/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleAdmin
+      description: gets single user Admin
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminResponse'
+  /manager:
+    get:
+      summary: Get managers by parameters
+      operationId: getManagers
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: 'result of search process'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerFindResult'
+    post:
+      operationId: createManager
+      description: Create user Manager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /manager/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleManager
+      description: gets single user Manager
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /worker:
+    get:
+      summary: Get workers by parameters
+      operationId: getWorkers
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: 'result of search process'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerFindResult'
+    post:
+      operationId: createWorker
+      description: Create user Worker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /worker/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleWorker
+      description: gets single user Worker
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /customer:
+    get:
+      summary: Get customers by parameters
+      operationId: getCustomers
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: 'result of search process'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerFindResult'
+    post:
+      operationId: createCustomer
+      description: Create user Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+  /customer/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleCustomer
+      description: gets single user Customer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+components:
+  schemas:
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+    AdminResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+    WorkerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      type: object
+      properties:
+        city:
+          type: string
+        street:
+          type: string
+        zipCode:
+          type: string
+    AdminFindResult:
+      type: object
+      properties:
+        startElement:
+          type: integer
+          format: int64
+        totalCount:
+          type: integer
+          format: int64
+        count:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminResponse'
+    WorkerFindResult:
+      type: object
+      properties:
+        startElement:
+          type: integer
+          format: int64
+        totalCount:
+          type: integer
+          format: int64
+        count:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkerResponse'
+    CustomerFindResult:
+      type: object
+      properties:
+        startElement:
+          type: integer
+          format: int64
+        totalCount:
+          type: integer
+          format: int64
+        count:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkerResponse'

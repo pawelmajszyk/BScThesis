@@ -31,12 +31,10 @@ public class ManagerController implements ManagerApi {
     @Override
     @RolesAllowed({"admin"})
     @CrossOrigin
-    public ResponseEntity<WorkerResponseModelApi> createManager(UserRequestModelApi userRequestModelApi) {
+    public ResponseEntity<WorkerResponseModelApi> createManager(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 
-        System.out.println("XD");
-
-        userDto = workerService.createManager(userDto);
+        userDto = workerService.createManager(userDto, id);
 
         return new ResponseEntity<>(workerMapper.mapDtoToModelApi(userDto), HttpStatus.OK);
     }

@@ -12,11 +12,13 @@ import pl.polsl.users.dto.UserDto;
 import pl.polsl.users.entity.Manager;
 import pl.polsl.users.entity.User;
 import pl.polsl.users.entity.Worker;
+import pl.polsl.users.exceptions.CinemaNotFoundException;
 import pl.polsl.users.exceptions.UserNotFoundException;
 import pl.polsl.users.mapper.UserMapper;
 import pl.polsl.users.mapper.WorkerMapper;
 import pl.polsl.users.repository.ManagerRepository;
 import pl.polsl.users.repository.WorkerRepository;
+import pl.polsl.users.service.clients.CinemaClient;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,23 +32,30 @@ public class WorkerService {
     private final WorkerMapper workerMapper;
     private final WorkerRepository workerRepository;
     private final UserMapper userMapper;
+    private final CinemaClient cinemaClient;
 
     @Transactional
-    public UserDto createManager(UserDto userDto) {
+    public UserDto createManager(UserDto userDto, Long id) {
+        try {
+            cinemaClient.getSingleCinema(id);
+        } catch (Exception e) {
+            throw new CinemaNotFoundException();
+        }
+
         Manager manager = managerRepository.save(workerMapper.mapDtoToManagerEntity(userDto));
 
         userDto.setRole("manager");
 
         String userId = keycloakService.addUser(userDto);
 
+        userDto.setId(manager.getId());
         manager.setUserId(userId);
-        userDto.setId(userId);
 
         return userDto;
     }
 
     @Transactional
-    public UserDto createWorker(UserDto userDto) {
+    public UserDto createWorker(UserDto userDto, Long id) {
 
         Worker save = workerRepository.save(workerMapper.mapDtoToWorkerEntity(userDto));
 
@@ -54,7 +63,7 @@ public class WorkerService {
 
         String userId = keycloakService.addUser(userDto);
 
-        userDto.setId(userId);
+        userDto.setId(save.getId());
         save.setUserId(userId);
 
         return userDto;
@@ -124,7 +133,7 @@ public class WorkerService {
 
         keycloakService.updateUser(userDto, user.getUserId(), isSelfUpdate);
 
-        userDto.setId(user.getUserId());
+        userDto.setId(mappedManager.getId());
 
         return userDto;
     }
@@ -143,8 +152,18 @@ public class WorkerService {
 
         keycloakService.updateUser(userDto, user.getUserId(), isSelfUpdate);
 
-        userDto.setId(user.getUserId());
+        userDto.setId(mappedWorker.getId());
 
         return userDto;
+    }
+
+    public UserDto mapWorker(User user) {
+
+        return null;
+    }
+
+    public UserDto mapManager(User user) {
+
+        return null;
     }
 }

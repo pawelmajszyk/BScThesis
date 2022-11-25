@@ -20,4 +20,6 @@ public class Worker extends User{
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    private Long cinemaId;
 }

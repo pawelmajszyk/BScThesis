@@ -10,8 +10,8 @@ services:
       DB_DATABASE: keycloack
       DB_USER: keycloack
       DB_PASSWORD: keycloack
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: admin
     image: jboss/keycloak:11.0.3
     ports:
       - "28080:8080"

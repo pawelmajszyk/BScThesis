@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import pl.polsl.users.exceptions.CinemaNotFoundException;
 import pl.polsl.users.exceptions.DuplicateUserException;
 import pl.polsl.users.exceptions.UserNotFoundException;
 
@@ -32,6 +33,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         log.error(ex.getMessage(), ex);
 
         String msg = "User not found" + ex.getMessage();
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        return new ResponseEntity<>(buildMessageBody(msg), httpStatus);
+    }
+
+    @ExceptionHandler(CinemaNotFoundException.class)
+    public ResponseEntity<Object> handleMissingCInema(CinemaNotFoundException ex) {
+        log.error(ex.getMessage(), ex);
+
+        String msg = "Cinema not found" + ex.getMessage();
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
         return new ResponseEntity<>(buildMessageBody(msg), httpStatus);

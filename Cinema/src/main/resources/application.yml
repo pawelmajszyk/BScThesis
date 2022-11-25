@@ -13,7 +13,7 @@ spring:
     initialize: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   security:
     oauth2:
       resourceserver:

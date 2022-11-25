@@ -11,10 +11,13 @@ import pl.polsl.users.dto.SearchDto;
 import pl.polsl.users.dto.UserDto;
 import pl.polsl.users.entity.Customer;
 import pl.polsl.users.entity.User;
+import pl.polsl.users.exceptions.CinemaNotFoundException;
 import pl.polsl.users.exceptions.UserNotFoundException;
 import pl.polsl.users.mapper.CustomerMapper;
 import pl.polsl.users.mapper.UserMapper;
 import pl.polsl.users.repository.CustomerRepository;
+import pl.polsl.users.repository.UserRepository;
+import pl.polsl.users.service.clients.CinemaClient;
 
 import java.util.stream.Collectors;
 
@@ -36,7 +39,7 @@ public class CustomerService {
         String userId = keycloakService.addUser(userDto);
 
         customer.setUserId(userId);
-        userDto.setId(userId);
+        userDto.setId(customer.getId());
 
         return userDto;
     }
@@ -54,7 +57,7 @@ public class CustomerService {
     public FindResultDto<UserDto> findCustomers(SearchDto searchDto) {
         PageRequest pageRequest = PageRequest.of(searchDto.getPage(), Math.toIntExact(searchDto.getLimit()));
 
-        Page<Customer> page = customerRepository.findAll(pageRequest);
+        Page<Customer> page = customerRepository.findAllByIsEnabledTrue(pageRequest);
 
         return FindResultDto.<UserDto>builder()
                 .totalCount(page.getTotalElements())
@@ -66,6 +69,7 @@ public class CustomerService {
                 .build();
     }
 
+    @Transactional
     public UserDto updateCustomer(UserDto userDto, User user, boolean isSelfUpdate) {
         Customer mappedCustomer = customerMapper.mapDtoToEntity(userDto);
         mappedCustomer.setId(user.getId());
@@ -77,8 +81,18 @@ public class CustomerService {
 
         keycloakService.updateUser(userDto, user.getUserId(), isSelfUpdate);
 
-        userDto.setId(user.getUserId());
+        userDto.setId(mappedCustomer.getId());
 
         return userDto;
+    }
+
+    public UserDto mapCustomer(User user) {
+        Customer customer = (Customer) user;
+
+        UserRepresentation keycloackUser = keycloakService.getUser(customer.getUserId());
+
+        UserDto userDto = customerMapper.mapEntityToDto(customer);
+
+        return userMapper.mapModelApiToDto(keycloackUser, userDto);
     }
 }

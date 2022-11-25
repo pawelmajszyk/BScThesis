@@ -19,4 +19,6 @@ public class Manager extends User{
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    private Long cinemaId;
 }

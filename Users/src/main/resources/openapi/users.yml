@@ -4,6 +4,16 @@ info:
   title: cinema-users
 paths:
   /user:
+    get:
+      operationId: getUserInfo
+      description: gets self info
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
     patch:
       operationId: selfResetPassword
       description: resets password
@@ -13,7 +23,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/WorkerResponse'
     put:
       operationId: selfUpdateUser
       description: upadtes user
@@ -46,7 +56,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/WorkerResponse'
     patch:
       operationId: resetPassword
       description: resets password
@@ -56,7 +66,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/WorkerResponse'
 
   /admin:
     get:
@@ -162,21 +172,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkerFindResult'
-    post:
-      operationId: createManager
-      description: Create user Manager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRequest'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkerResponse'
   /manager/{id}:
     parameters:
       - name: id
@@ -188,6 +183,21 @@ paths:
     get:
       operationId: getSingleManager
       description: gets single user Manager
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+    post:
+      operationId: createManager
+      description: Create user Manager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
       responses:
         '200':
           description: ''
@@ -219,21 +229,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkerFindResult'
-    post:
-      operationId: createWorker
-      description: Create user Worker
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRequest'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkerResponse'
   /worker/{id}:
     parameters:
       - name: id
@@ -245,6 +240,21 @@ paths:
     get:
       operationId: getSingleWorker
       description: gets single user Worker
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+    post:
+      operationId: createWorker
+      description: Create user Worker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
       responses:
         '200':
           description: ''
@@ -330,7 +340,8 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         username:
           type: string
         email:
@@ -343,7 +354,8 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         username:
           type: string
         email:

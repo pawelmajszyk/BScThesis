@@ -72,7 +72,7 @@ public class AdminController implements AdminApi {
     }
 
     @Override
-    @RolesAllowed({"admin"})
+    //@RolesAllowed({"admin"})
     @CrossOrigin
     public ResponseEntity<WorkerResponseModelApi> updateUser(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);

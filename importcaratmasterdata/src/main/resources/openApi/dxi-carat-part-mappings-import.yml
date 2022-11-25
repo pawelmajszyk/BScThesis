@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  version: 2.0.0
+  title: ClaimParts PartsInventory
+paths:
+  /import:
+    get:
+      operationId: noAction
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    ImportCaratPartMappingsNotification:
+      type: object
+      properties:
+        originalBucketName:
+          type: string
+        originalSourceName:
+          type: string
+        bucket:
+          type: string
+        exchangeFile:
+          type: string
+    ImportCaratPartMappings:
+      type: object
+      properties:
+        mappings:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ImportCaratMasterdataNotification:
+      type: object
+      properties:
+        originalBucketName:
+          type: string
+        originalSourceName:
+          type: string
+        bucket:
+          type: string
+        exchangeFile:
+          type: string
+    ImportCaratMasterdata:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaratMasterdata'
+
+    CaratMasterdata:
+      type: object
+      properties:
+        caratId:
+          type: string
+        description:
+          type: string
+        currentRetailPrice:
+          type: number
+          format: double
+        ekListPrice:
+          type: number
+          format: double
+        ekNetPrice:
+          type: number
+          format: double
+        packagingUnit:
+          type: integer
+          format: int32
+        amountPerUnit:
+          type: integer
+          format: int32
+        currentSupplierCode:
+          type: string
+        deliveryCapabilityKeyL:
+          type: string
+        storageKeyH:
+          type: string
+        purchaseKey:
+          type: string
+        productGroup:
+          type: string
+        uvpNetPrice:
+          type: number
+          format: double
+        uvpLowestPrice:
+          type: number
+          format: double
+        oeNumber:
+          type: string
+        retailPrice:
+          type: number
+          format: double
+        isOwnBrand:
+          type: boolean
+        isAutoPlusProduct:
+          type: boolean
+        assemblyNumber:
+          type: string
+        elekalatLink:
+          type: string
+        workshopNet:
+          type: number
+          format: double
+        supplierInternalProductGroup:
+          type: string
+        supplierInternalDivision:
+          type: string
+        supplierName:
+          type: string
+        itemDesignation:
+          type: string
+        endOfSentenceIndicator:
+          type: string
+        supplierItemNumber:
+          type: string
+        supplierItemNumberCompressed:
+          type: string
+        supplierItemNumberCompressed2:
+          type: string

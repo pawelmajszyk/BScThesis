@@ -48,10 +48,7 @@ public class KeycloakService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEnabled(true);
-
-        if(isSelfUpdate) {
-            user.setEmail(userDto.getEmail());
-        }
+        user.setEmail(userDto.getEmail());
 
         UsersResource instance = KeycloakConfig.getInstance()
                 .realm("cinema")
