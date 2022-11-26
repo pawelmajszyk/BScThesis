@@ -17,7 +17,7 @@ import java.util.Map;
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CinemaMissingException.class)
-    public ResponseEntity<Object> handeMissingTopic(CinemaMissingException ex) {
+    public ResponseEntity<Object> handeMissingCinema(CinemaMissingException ex) {
         log.error(ex.getMessage(), ex);
 
         String msg = "Cinema with given id is missing";

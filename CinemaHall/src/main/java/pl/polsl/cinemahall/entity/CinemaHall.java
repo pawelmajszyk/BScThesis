@@ -22,7 +22,7 @@ public class CinemaHall {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="cinema_hall_id", nullable=false)
     private List<Seat> seats;
 

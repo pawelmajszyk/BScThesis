@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: cinema-users
+  title: cinema-hall
 paths:
   /{id}:
     parameters:
@@ -38,7 +38,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CinemaHall'
-
+  /details/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      summary: Get cinemahalls by cinemaId
+      operationId: getCinemaHall
+      responses:
+        '200':
+          description: 'cinemaHalls detail'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/CinemaHall'
+    delete:
+      summary: delete cinema hall
+      operationId: deleteCinemaHall
+      responses:
+        '200':
+          description: 'cinemaHalls detail'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CinemaHall'
+  /details/{id}/{state}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+      - name: state
+        in: path
+        schema:
+          $ref: '#/components/schemas/SeatState'
+        required: true
+    put:
+      summary: change seat state
+      operationId: changeSeatState
+      responses:
+        '200':
+          description: 'change seat state'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Seat'
 
 components:
   schemas:
@@ -78,7 +128,6 @@ components:
           type: integer
           format: int32
         seatState:
-          type: object
           $ref: '#/components/schemas/SeatState'
     SeatState:
       type: string
@@ -86,4 +135,3 @@ components:
         - AVAILABLE
         - UNAVAILABLE
         - MAINTANCE_SCHEDULED
-
