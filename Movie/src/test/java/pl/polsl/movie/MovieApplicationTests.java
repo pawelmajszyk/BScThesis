@@ -1,4 +1,4 @@
-package pl.polsl;
+package pl.polsl.movie;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ScheduleApplicationTests {
+class MovieApplicationTests {
 
     @MockBean
     JwtDecoder jwtDecoder;
