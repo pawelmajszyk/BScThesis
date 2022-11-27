@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-movie
+paths:
+  /movie:
+    post:
+      operationId: createMovie
+      description: creates movie
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MovieRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+    get:
+      operationId: getMovieList
+      description: creates movie
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+  /movie/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getSingleMovie
+      description: returns single movie
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+    delete:
+      operationId: deletesSingleMovie
+      description: delete single movie
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+    put:
+      operationId: updateMovie
+      description: update movie
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MovieRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+
+components:
+  schemas:
+    MovieRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        director:
+          type: string
+        category:
+          $ref: '#/components/schemas/Category'
+        ageCategory:
+          $ref: '#/components/schemas/AgeCategory'
+        poster:
+          type: string
+          format: binary
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        director:
+          type: string
+        category:
+          $ref: '#/components/schemas/Category'
+        ageCategory:
+          $ref: '#/components/schemas/AgeCategory'
+        poster:
+          type: string
+          format: binary
+        isEnabled:
+          type: boolean
+    Category:
+      type: string
+      enum:
+        - HORROR
+    AgeCategory:
+      type: string
+      enum:
+        - PG13

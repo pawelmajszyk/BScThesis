@@ -143,24 +143,24 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>5.3.0</version>
                 <executions>
-<!--                    <execution>-->
-<!--                        <id>users</id>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <generatorName>spring</generatorName>-->
-<!--                            <inputSpec>${project.basedir}/src/main/resources/openapi/users.yml</inputSpec>-->
-<!--                            <output>${project.build.directory}/generated-sources</output>-->
-<!--                            <modelPackage>${project.groupId}.users.api.model</modelPackage>-->
-<!--                            <apiPackage>${project.groupId}.users.api.controller</apiPackage>-->
-<!--                            <modelNameSuffix>ModelApi</modelNameSuffix>-->
-<!--                            <generateApis>true</generateApis>-->
-<!--                            <configOptions>-->
-<!--                                <interfaceOnly>true</interfaceOnly>-->
-<!--                            </configOptions>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
+                    <execution>
+                        <id>movie</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>spring</generatorName>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/movie.yml</inputSpec>
+                            <output>${project.build.directory}/generated-sources</output>
+                            <modelPackage>${project.groupId}.movie.api.model</modelPackage>
+                            <apiPackage>${project.groupId}.movie.api.controller</apiPackage>
+                            <modelNameSuffix>ModelApi</modelNameSuffix>
+                            <generateApis>true</generateApis>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                            </configOptions>
+                        </configuration>
+                    </execution>
 <!--                    <execution>-->
 <!--                        <id>schedule</id>-->
 <!--                        <goals>-->
