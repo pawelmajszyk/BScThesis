@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-schedule
+paths:
+  /schedule:
+    post:
+      operationId: createSchedule
+      description: Create schedule for worker
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /schedule/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      operationId: getScheduleList
+      description: Gets schedule list for worker
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: '#/components/schemas/Schedule'
+    delete:
+      operationId: deleteSchedule
+      description: deletesSingleSchedule
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /schedule/manager/sign/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    post:
+      operationId: signWorkerSchedule
+      description: sign workers schedule
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  /schedule/worker/sign/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    post:
+      operationId: selfSignSchedule
+      description: self sign schedule
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+
+components:
+  schemas:
+    ScheduleRequest:
+      type: object
+      properties:
+        workerId:
+          type: integer
+          format: int64
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        workerId:
+          type: integer
+          format: int64
+        managerId:
+          type: integer
+          format: int64
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+        isSignedByWorker:
+          type: boolean
+        isSignedByManager:
+          type: boolean

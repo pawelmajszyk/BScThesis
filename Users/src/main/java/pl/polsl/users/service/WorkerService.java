@@ -1,6 +1,7 @@
 package pl.polsl.users.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.jdbc.Work;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.users.dto.FindResultDto;
 import pl.polsl.users.dto.SearchDto;
 import pl.polsl.users.dto.UserDto;
+import pl.polsl.users.entity.Customer;
 import pl.polsl.users.entity.Manager;
 import pl.polsl.users.entity.User;
 import pl.polsl.users.entity.Worker;
@@ -158,12 +160,22 @@ public class WorkerService {
     }
 
     public UserDto mapWorker(User user) {
+        Worker worker = (Worker) user;
 
-        return null;
+        UserRepresentation keycloackUser = keycloakService.getUser(worker.getUserId());
+
+        UserDto userDto = workerMapper.mapEntityToDto(worker);
+
+        return userMapper.mapModelApiToDto(keycloackUser, userDto);
     }
 
     public UserDto mapManager(User user) {
+        Manager manager = (Manager) user;
 
-        return null;
+        UserRepresentation keycloackUser = keycloakService.getUser(manager.getUserId());
+
+        UserDto userDto = workerMapper.mapEntityToDto(manager);
+
+        return userMapper.mapModelApiToDto(keycloackUser, userDto);
     }
 }

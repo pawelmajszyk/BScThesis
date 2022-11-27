@@ -48,9 +48,8 @@ public class AdminService {
         UserRepresentation user = keycloakService.getUser(admin.getUserId());
 
         UserDto userDto = adminMapper.mapEntityToDto(admin);
-        UserDto userDto1 = userMapper.mapModelApiToDto(user, userDto);
 
-        return userDto1;
+        return userMapper.mapModelApiToDto(user, userDto);
     }
 
     public FindResultDto<UserDto> findAdmins(SearchDto searchDto) {

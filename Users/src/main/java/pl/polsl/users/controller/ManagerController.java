@@ -40,7 +40,7 @@ public class ManagerController implements ManagerApi {
     }
 
     @Override
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"admin", "manager"})
     @CrossOrigin
     public ResponseEntity<WorkerResponseModelApi> getSingleManager(Long id) {
         UserDto userDto = workerService.getSingleManager(id);

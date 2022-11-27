@@ -42,7 +42,7 @@ public class WorkerController implements WorkerApi {
 
 
     @Override
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"admin", "manager"})
     @CrossOrigin
     public ResponseEntity<WorkerResponseModelApi> getSingleWorker(Long id) {
         UserDto userDto = workerService.getSingleWorker(id);
