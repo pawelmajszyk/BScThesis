@@ -20,17 +20,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/Movie'
     get:
+      summary: Get movies by parameters
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int64
+            default: 50
+        - name: page
+          in: query
+          schema:
+            type: integer
+            format: int32
+            default: 0
       operationId: getMovieList
-      description: creates movie
+      description: returns movie list
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Movie'
+                $ref: '#/components/schemas/MovieFindResult'
 
   /movie/{id}:
     parameters:
@@ -75,7 +87,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Movie'
-
 components:
   schemas:
     MovieRequest:
@@ -94,6 +105,22 @@ components:
         poster:
           type: string
           format: binary
+    MovieFindResult:
+      type: object
+      properties:
+        startElement:
+          type: integer
+          format: int64
+        totalCount:
+          type: integer
+          format: int64
+        count:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movie'
     Movie:
       type: object
       properties:
@@ -112,7 +139,7 @@ components:
           $ref: '#/components/schemas/AgeCategory'
         poster:
           type: string
-          format: binary
+          format: byte
         isEnabled:
           type: boolean
     Category:
