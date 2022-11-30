@@ -21,4 +21,5 @@ public class MovieDto {
     private byte[] poster;
     private String director;
     private Boolean isEnabled;
+    private Long length;
 }

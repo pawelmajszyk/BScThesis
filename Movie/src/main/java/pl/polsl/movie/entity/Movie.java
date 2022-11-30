@@ -28,6 +28,7 @@ public class Movie {
     private AgeCategory ageCategory;
 
     private String description;
+    private Long length;
 
     @Lob
     private byte[] poster;
