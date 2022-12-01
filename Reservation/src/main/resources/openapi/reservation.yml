@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-reservation
+paths:
+  /reservation:
+    post:
+      operationId: createCinemaHall
+      description: creates cinemaHall
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CinemaHallRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CinemaHall'
+#  /details/{id}:
+#    parameters:
+#      - name: id
+#        in: path
+#        schema:
+#          type: integer
+#          format: int64
+#        required: true
+#    get:
+#      summary: Get cinemahalls by cinemaId
+#      operationId: getCinemaHall
+#      responses:
+#        '200':
+#          description: 'cinemaHalls detail'
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/CinemaHall'
+#    delete:
+#      summary: delete cinema hall
+#      operationId: deleteCinemaHall
+#      responses:
+#        '200':
+#          description: 'cinemaHalls detail'
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/CinemaHall'
+
+components:
+  schemas:
+    ReservationRequest:
+      type: object
+      properties:
+        screeningId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        seatIds:
+          type: array
+          items:
+            type:  integer
+            format: int64
+    ReservationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        screeningId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        seatIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        isActive:
+          type: boolean

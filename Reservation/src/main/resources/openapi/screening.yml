@@ -1,0 +1,118 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: cinema-screening
+paths:
+  /screening:
+    get:
+      summary: Get active screening
+      operationId: getScreenings
+      responses:
+        '200':
+          description: 'screenings list'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Screening'
+    post:
+      operationId: createScreening
+      description: creates screening
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScreeningRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screening'
+  /screening/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      summary: Get screening by id
+      operationId: getScreeningById
+      responses:
+        '200':
+          description: 'screening detail'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screening'
+    delete:
+      summary: delete screening
+      operationId: deleteScreening
+      responses:
+        '200':
+          description: 'screening deleted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screening'
+    put:
+      summary: update screening
+      operationId: updateScreening
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScreeningUpdateRequest'
+      responses:
+        '200':
+          description: 'update screening'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screening'
+
+components:
+  schemas:
+    ScreeningUpdateRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        cinemaHallId:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+    ScreeningRequest:
+      type: object
+      properties:
+        movieId:
+          type: integer
+          format: int64
+        cinemaHallId:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
+    Screening:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        movieId:
+          type: integer
+          format: int64
+        cinemaHallId:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date-time
