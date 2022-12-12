@@ -1,5 +1,6 @@
 
 spring:
+
   application:
     name: Movie
   config:
@@ -14,12 +15,15 @@ spring:
     initialize: false
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:28080/auth/realms/cinema/protocol/openid-connect/certs
+  servlet:
+    multipart:
+      max-file-size: 1000000000
 
 
 eureka:

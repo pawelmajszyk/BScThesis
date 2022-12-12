@@ -22,4 +22,6 @@ public class MovieDto {
     private String director;
     private Boolean isEnabled;
     private Long length;
+    private String trailerLink;
+    private String shortDescription;
 }

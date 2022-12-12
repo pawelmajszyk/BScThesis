@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import pl.polsl.movie.api.controller.MovieApi;
@@ -28,17 +29,19 @@ public class MovieController implements MovieApi {
 
     @SneakyThrows
     @Override
-    public ResponseEntity<MovieModelApi> createMovie(String title, String description, String director, CategoryModelApi category, AgeCategoryModelApi ageCategory, MultipartFile poster) {
-        MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory);
+    @CrossOrigin
+    public ResponseEntity<MovieModelApi> createMovie(String title, String description, String director, String category, String ageCategory, String length, MultipartFile poster, String trailerLink, String shortDescription) {
+        MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory, length, trailerLink, shortDescription);
 
         movieDto.setPoster(poster.getBytes());
 
-        movieService.createMovie(movieDto);
+        MovieDto result = movieService.createMovie(movieDto);
 
-        return MovieApi.super.createMovie(title, description, director, category, ageCategory, poster);
+        return new ResponseEntity<>(mapper.mapDtoToModelApi(result), HttpStatus.OK);
     }
 
     @Override
+    @CrossOrigin
     public ResponseEntity<MovieModelApi> deletesSingleMovie(Long id) {
         MovieDto movieDto = movieService.deleteMovie(id);
 
@@ -46,29 +49,37 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    public ResponseEntity<MovieFindResultModelApi> getMovieList(Long limit, Integer page) {
+    @CrossOrigin
+    public ResponseEntity<MovieFindResultModelApi> getMovieList(Long limit, Integer page, Boolean complete) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)
                 .page(page).build();
 
-        FindResultDto<MovieDto> movieList = movieService.getMovieList(searchDto);
+        FindResultDto<MovieDto> movieList = movieService.getMovieList(searchDto, complete);
 
         return new ResponseEntity<>(findResultMapper.mapDtoToModelApi(movieList), HttpStatus.OK);
     }
 
     @Override
+    @CrossOrigin
     public ResponseEntity<MovieModelApi> getSingleMovie(Long id) {
         MovieDto movieDto = movieService.getSingleMovie(id);
 
         return new ResponseEntity<>(mapper.mapDtoToModelApi(movieDto), HttpStatus.OK);
     }
 
+//    @Override
+//    public ResponseEntity<MovieModelApi> updateMovie(Long id, String title, String description, String director, CategoryModelApi category, AgeCategoryModelApi ageCategory, MultipartFile poster) {
+//        MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory);
+//
+//        MovieDto result = movieService.updateMovie(id, movieDto);
+//
+//        return new ResponseEntity<>(mapper.mapDtoToModelApi(result), HttpStatus.OK);
+//    }
+
+
     @Override
-    public ResponseEntity<MovieModelApi> updateMovie(Long id, String title, String description, String director, CategoryModelApi category, AgeCategoryModelApi ageCategory, MultipartFile poster) {
-        MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory);
-
-        MovieDto result = movieService.updateMovie(id, movieDto);
-
-        return new ResponseEntity<>(mapper.mapDtoToModelApi(result), HttpStatus.OK);
+    public ResponseEntity<MovieModelApi> updateMovie(Long id, String title, String description, String director, Long length, CategoryModelApi category, AgeCategoryModelApi ageCategory, MultipartFile poster, String trailerLink, String shortDescription) {
+        return MovieApi.super.updateMovie(id, title, description, director, length, category, ageCategory, poster, trailerLink, shortDescription);
     }
 }

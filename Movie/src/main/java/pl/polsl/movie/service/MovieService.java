@@ -9,6 +9,7 @@ import pl.polsl.movie.dto.FindResultDto;
 import pl.polsl.movie.dto.MovieDto;
 import pl.polsl.movie.dto.SearchDto;
 import pl.polsl.movie.entity.Movie;
+import pl.polsl.movie.entity.Poster;
 import pl.polsl.movie.exception.MovieMissingException;
 import pl.polsl.movie.mapper.MovieMapper;
 import pl.polsl.movie.repository.MovieRepository;
@@ -26,6 +27,8 @@ public class MovieService {
     @Transactional
     public MovieDto createMovie(MovieDto movieDto) {
         Movie movie = mapper.mapDtoToEntity(movieDto);
+
+        movie.setPoster(Poster.builder().poster(movieDto.getPoster()).build());
 
         return mapper.mapEntityToDto(movieRepository.save(movie));
     }
@@ -55,17 +58,18 @@ public class MovieService {
         return mapper.mapEntityToDto(movieRepository.findById(id).orElseThrow(MovieMissingException::new));
     }
 
-    public FindResultDto<MovieDto> getMovieList(SearchDto searchDto) {
+    @Transactional
+    public FindResultDto<MovieDto> getMovieList(SearchDto searchDto, Boolean complete) {
         PageRequest pageRequest = PageRequest.of(searchDto.getPage(), Math.toIntExact(searchDto.getLimit()));
 
-        Page<Movie> page = movieRepository.findAll(pageRequest);
+        Page<Movie> page = movieRepository.findAllByIsEnabledTrue(pageRequest);
 
         return FindResultDto.<MovieDto>builder()
                 .totalCount(page.getTotalElements())
                 .count((long) page.getNumberOfElements())
                 .startElement(searchDto.getLimit() * searchDto.getPage())
                 .results(page.getContent().stream()
-                        .map(mapper::mapEntityToDto)
+                        .map(map -> Boolean.TRUE.equals(complete) ? mapper.mapEntityToDto(map) : mapper.mapEntityToDtoIgnorePoster(map))
                         .collect(Collectors.toList()))
                 .build();
     }

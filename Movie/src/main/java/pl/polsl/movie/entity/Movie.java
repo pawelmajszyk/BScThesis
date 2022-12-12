@@ -16,7 +16,7 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "auto_gen")
-    @SequenceGenerator(name = "auto_gen", sequenceName = "A")
+    @SequenceGenerator(name = "auto_gen", sequenceName = "a")
     private Long id;
 
     private String title;
@@ -28,12 +28,14 @@ public class Movie {
     private AgeCategory ageCategory;
 
     private String description;
+    private String shortDescription;
     private Long length;
 
-    @Lob
-    private byte[] poster;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Poster poster;
 
     private String director;
 
     private Boolean isEnabled;
+    private String trailerLink;
 }
