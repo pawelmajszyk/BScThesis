@@ -69,7 +69,6 @@ public class CustomerService {
                 .build();
     }
 
-    @Transactional
     public UserDto updateCustomer(UserDto userDto, User user, boolean isSelfUpdate) {
         Customer mappedCustomer = customerMapper.mapDtoToEntity(userDto);
         mappedCustomer.setId(user.getId());

@@ -44,7 +44,7 @@ public class WorkerService {
             throw new CinemaNotFoundException();
         }
 
-        Manager manager = managerRepository.save(workerMapper.mapDtoToManagerEntity(userDto));
+        Manager manager = managerRepository.save(workerMapper.mapDtoToManagerEntity(userDto, id));
 
         userDto.setRole("manager");
 
@@ -58,8 +58,13 @@ public class WorkerService {
 
     @Transactional
     public UserDto createWorker(UserDto userDto, Long id) {
+        try {
+            cinemaClient.getSingleCinema(id);
+        } catch (Exception e) {
+            throw new CinemaNotFoundException();
+        }
 
-        Worker save = workerRepository.save(workerMapper.mapDtoToWorkerEntity(userDto));
+        Worker save = workerRepository.save(workerMapper.mapDtoToWorkerEntity(userDto, id));
 
         userDto.setRole("worker");
 
@@ -123,7 +128,9 @@ public class WorkerService {
 
     public UserDto updateManager(UserDto userDto, User user, boolean isSelfUpdate) {
         Long addressId = managerRepository.findById(user.getId()).get().getAddress().getId();
-        Manager mappedManager = workerMapper.mapDtoToManagerEntity(userDto);
+        Manager manager = managerRepository.findById(user.getId()).get();
+
+        Manager mappedManager = workerMapper.mapDtoToManagerEntity(userDto, manager.getCinemaId());
 
         mappedManager.setId(user.getId());
         mappedManager.setUserId(user.getUserId());
@@ -142,7 +149,8 @@ public class WorkerService {
 
     public UserDto updateWorker(UserDto userDto, User user, boolean isSelfUpdate) {
         Long addressId = workerRepository.findById(user.getId()).get().getAddress().getId();
-        Worker mappedWorker = workerMapper.mapDtoToWorkerEntity(userDto);
+        Worker worker = workerRepository.findById(user.getId()).get();
+        Worker mappedWorker = workerMapper.mapDtoToWorkerEntity(userDto, worker.getCinemaId());
 
         mappedWorker.setId(user.getId());
         mappedWorker.setUserId(user.getUserId());

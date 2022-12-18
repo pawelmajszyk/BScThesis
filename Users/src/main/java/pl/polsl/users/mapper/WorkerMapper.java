@@ -14,15 +14,17 @@ public interface WorkerMapper {
 
     WorkerResponseModelApi mapDtoToModelApi(UserDto userDto);
 
-    @Mapping(target = "userId", source = "id")
+    @Mapping(target = "userId", source = "userDto.id")
     @Mapping(ignore = true, target = "id")
     @Mapping(target = "isEnabled", defaultValue = "true")
-    Manager mapDtoToManagerEntity(UserDto userDto);
+    @Mapping(target = "cinemaId", source = "cinemaId")
+    Manager mapDtoToManagerEntity(UserDto userDto, Long cinemaId);
 
-    @Mapping(target = "userId", source = "id")
+    @Mapping(target = "userId", source = "userDto.id")
     @Mapping(ignore = true, target = "id")
     @Mapping(target = "isEnabled", defaultValue = "true")
-    Worker mapDtoToWorkerEntity(UserDto userDto);
+    @Mapping(target = "cinemaId", source = "cinemaId")
+    Worker mapDtoToWorkerEntity(UserDto userDto, Long cinemaId);
 
     UserDto mapEntityToDto(Worker worker);
 
