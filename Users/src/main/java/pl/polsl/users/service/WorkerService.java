@@ -3,6 +3,7 @@ package pl.polsl.users.service;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.jdbc.Work;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -96,10 +97,12 @@ public class WorkerService {
         return userMapper.mapModelApiToDto(user, userDto);
     }
 
-    public FindResultDto<UserDto> findWorkers(SearchDto searchDto) {
+    public FindResultDto<UserDto> findWorkers(SearchDto searchDto, Long cinemaId) {
         PageRequest pageRequest = PageRequest.of(searchDto.getPage(), Math.toIntExact(searchDto.getLimit()));
 
-        Page<Worker> page = workerRepository.findAll(pageRequest);
+        Example<Worker> example = Example.of(Worker.builder().isEnabled(true).cinemaId(cinemaId).build());
+
+        Page<Worker> page = workerRepository.findAll(example, pageRequest);
 
         return FindResultDto.<UserDto>builder()
                 .totalCount(page.getTotalElements())
@@ -185,5 +188,24 @@ public class WorkerService {
         UserDto userDto = workerMapper.mapEntityToDto(manager);
 
         return userMapper.mapModelApiToDto(keycloackUser, userDto);
+    }
+
+    public FindResultDto<UserDto> findWorkersForCinema(SearchDto searchDto, String currentPrincipalName) {
+        Manager manager = managerRepository.findByUserId(currentPrincipalName);
+
+        PageRequest pageRequest = PageRequest.of(searchDto.getPage(), Math.toIntExact(searchDto.getLimit()));
+
+        Example<Worker> example = Example.of(Worker.builder().isEnabled(true).cinemaId(manager.getCinemaId()).build());
+
+        Page<Worker> page = workerRepository.findAll(example, pageRequest);
+
+        return FindResultDto.<UserDto>builder()
+                .totalCount(page.getTotalElements())
+                .count((long) page.getNumberOfElements())
+                .startElement(searchDto.getLimit() * searchDto.getPage())
+                .results(page.getContent().stream()
+                        .map(workerMapper::mapEntityToDto)
+                        .collect(Collectors.toList()))
+                .build();
     }
 }

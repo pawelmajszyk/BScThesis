@@ -1,6 +1,7 @@
 package pl.polsl.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.PropertyValues;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.dto.ScheduleDto;
@@ -108,6 +109,14 @@ public class ScheduleService {
 
     public List<ScheduleDto> getSchedulesForWorker(Long id) {
         return scheduleRepository.findAllByWorkerId(id).stream()
+                .map(scheduleMapper::mapEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ScheduleDto> getScheuleListForSelfWorker() {
+        WorkerResponseModelApi workerInfo = usersClient.getSelfInfo();
+
+        return scheduleRepository.findAllByWorkerId(workerInfo.getId()).stream()
                 .map(scheduleMapper::mapEntityToDto)
                 .collect(Collectors.toList());
     }

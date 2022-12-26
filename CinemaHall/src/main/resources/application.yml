@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: CinemaHall
@@ -27,4 +28,5 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8887/eureka}
   instance:
     preferIpAddress: true
-
+server:
+  port: 0

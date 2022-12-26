@@ -19,6 +19,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Schedule'
+    get:
+      operationId: getScheduleListForWorker
+      description: Gets schedule list for self as worker
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Schedule'
   /schedule/{id}:
     parameters:
       - name: id

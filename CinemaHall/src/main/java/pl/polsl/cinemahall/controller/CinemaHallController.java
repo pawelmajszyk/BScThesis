@@ -5,14 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
+import pl.polsl.cinemahall.api.controller.DefaultApi;
 import pl.polsl.cinemahall.api.controller.DetailsApi;
 import pl.polsl.cinemahall.api.controller.IdApi;
 import pl.polsl.cinemahall.api.model.CinemaHallModelApi;
 import pl.polsl.cinemahall.api.model.CinemaHallRequestModelApi;
 import pl.polsl.cinemahall.api.model.SeatModelApi;
 import pl.polsl.cinemahall.api.model.SeatStateModelApi;
-import pl.polsl.cinemahall.dto.CinemaHallDto;
-import pl.polsl.cinemahall.dto.SeatDto;
+import pl.polsl.cinemahall.dto.*;
 import pl.polsl.cinemahall.mapper.CinemaHallMapper;
 import pl.polsl.cinemahall.mapper.SeatMapper;
 import pl.polsl.cinemahall.service.CinemaHallService;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-public class CinemaHallController implements IdApi, DetailsApi {
+public class CinemaHallController implements IdApi, DetailsApi, DefaultApi {
 
     private final CinemaHallService cinemaHallService;
     private final CinemaHallMapper cinemaHallMapper;
@@ -69,6 +69,16 @@ public class CinemaHallController implements IdApi, DetailsApi {
     @RolesAllowed({"admin", "manager", "customer"})
     public ResponseEntity<List<CinemaHallModelApi>> getCinemaHalls(Long id) {
         List<CinemaHallModelApi> result = cinemaHallService.findAllForCinema(id).stream()
+                .map(cinemaHallMapper::mapDtoToModelApi)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    @RolesAllowed({ "manager", "customer"})
+    public ResponseEntity<List<CinemaHallModelApi>> getCinemaHallsForWorker() {
+        List<CinemaHallModelApi> result = cinemaHallService.findAllForWorker().stream()
                 .map(cinemaHallMapper::mapDtoToModelApi)
                 .collect(Collectors.toList());
 

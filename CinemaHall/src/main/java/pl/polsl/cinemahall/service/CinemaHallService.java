@@ -1,6 +1,7 @@
 package pl.polsl.cinemahall.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.PropertyValues;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,8 @@ import pl.polsl.cinemahall.mapper.SeatMapper;
 import pl.polsl.cinemahall.repository.CinemaHallRepository;
 import pl.polsl.cinemahall.repository.SeatRepository;
 import pl.polsl.cinemahall.service.clients.CinemaClient;
+import pl.polsl.cinemahall.service.clients.UsersClient;
+import pl.polsl.users.api.model.WorkerResponseModelApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class CinemaHallService {
     private final CinemaHallMapper cinemaHallMapper;
     private final SeatRepository seatRepository;
     private final SeatMapper seatMapper;
+    private final UsersClient usersClient;
 
     @Transactional
     public CinemaHallDto createCinemaHall(Long id, String name, Integer getxRows, Integer getyRows) {
@@ -99,4 +103,9 @@ public class CinemaHallService {
         return seatMapper.mapEntityToDto(seat);
     }
 
+    public List<CinemaHallDto> findAllForWorker() {
+        WorkerResponseModelApi workerInfo = usersClient.getSelfInfo();
+
+        return findAllForCinema(workerInfo.getCinemaId());
+    }
 }

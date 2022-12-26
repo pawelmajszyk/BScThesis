@@ -1,8 +1,6 @@
 package pl.polsl.mapper;
 
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import pl.polsl.dto.ScheduleDto;
 import pl.polsl.entity.Schedule;
 import pl.polsl.schedule.api.model.ScheduleModelApi;
