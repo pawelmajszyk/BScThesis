@@ -3,9 +3,12 @@ package pl.polsl.screening.mapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import pl.polsl.movie.api.model.MovieModelApi;
+import pl.polsl.screening.api.model.MovieScreeningModelApi;
 import pl.polsl.screening.api.model.ScreeningModelApi;
 import pl.polsl.screening.api.model.ScreeningRequestModelApi;
 import pl.polsl.screening.api.model.ScreeningUpdateRequestModelApi;
+import pl.polsl.screening.dto.MovieScreeningDto;
 import pl.polsl.screening.dto.ScreeningDto;
 import pl.polsl.screening.entity.Screening;
 
@@ -18,4 +21,8 @@ public interface ScreeningMapper {
     ScreeningDto mapModelApiToDto(ScreeningRequestModelApi screeningRequestModelApi);
     ScreeningDto mapModelApiToDto(ScreeningUpdateRequestModelApi screeningUpdateRequestModelApi);
     ScreeningModelApi mapDtoToModelApi(ScreeningDto screeningDto);
+
+    MovieScreeningDto mapMovieApiToDto(MovieModelApi movieModelApi);
+
+    MovieScreeningModelApi mapDtoToModelApi(MovieScreeningDto screeningDto);
 }

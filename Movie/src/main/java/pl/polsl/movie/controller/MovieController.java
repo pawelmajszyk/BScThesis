@@ -29,7 +29,6 @@ public class MovieController implements MovieApi {
 
     @SneakyThrows
     @Override
-    @CrossOrigin
     public ResponseEntity<MovieModelApi> createMovie(String title, String description, String director, String category, String ageCategory, String length, MultipartFile poster, String trailerLink, String shortDescription) {
         MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory, length, trailerLink, shortDescription);
 
@@ -41,7 +40,6 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    @CrossOrigin
     public ResponseEntity<MovieModelApi> deletesSingleMovie(Long id) {
         MovieDto movieDto = movieService.deleteMovie(id);
 
@@ -49,7 +47,6 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    @CrossOrigin
     public ResponseEntity<MovieFindResultModelApi> getMovieList(Long limit, Integer page, Boolean complete) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)
@@ -61,7 +58,6 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    @CrossOrigin
     public ResponseEntity<MovieModelApi> getSingleMovie(Long id) {
         MovieDto movieDto = movieService.getSingleMovie(id);
 

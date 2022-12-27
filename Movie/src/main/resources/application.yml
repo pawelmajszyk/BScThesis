@@ -15,7 +15,7 @@ spring:
     initialize: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
   security:
     oauth2:
       resourceserver:
@@ -32,4 +32,5 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8887/eureka}
   instance:
     preferIpAddress: true
-
+server:
+  port: 0

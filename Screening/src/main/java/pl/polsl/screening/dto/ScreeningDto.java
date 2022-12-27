@@ -2,6 +2,8 @@ package pl.polsl.screening.dto;
 
 import lombok.*;
 
+import java.time.OffsetDateTime;
+
 
 @Builder
 @Getter
@@ -14,4 +16,6 @@ public class ScreeningDto {
     private Long movieId;
     private Long cinemaHallId;
     private Boolean isActive;
+    private OffsetDateTime startTime;
+    private OffsetDateTime endTime;
 }

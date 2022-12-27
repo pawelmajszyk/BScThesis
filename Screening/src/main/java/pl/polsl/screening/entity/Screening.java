@@ -21,5 +21,6 @@ public class Screening {
     private Long movieId;
     private Long cinemaHallId;
     private Boolean isActive;
-    private OffsetDateTime date;
+    private OffsetDateTime startTime;
+    private OffsetDateTime endTime;
 }

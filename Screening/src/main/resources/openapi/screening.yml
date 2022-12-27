@@ -74,7 +74,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Screening'
-
+  /screening/movie/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+      - name: date
+        in: query
+        schema:
+          type: string
+          format: date-time
+    get:
+      summary: Get screening by cinemaId
+      operationId: getScreeningByCinemaId
+      responses:
+        '200':
+          description: 'screening detail'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieScreening'
 components:
   schemas:
     ScreeningUpdateRequest:
@@ -98,9 +122,28 @@ components:
         cinemaHallId:
           type: integer
           format: int64
-        date:
+        startTime:
           type: string
           format: date-time
+    MovieScreening:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        shortDescription:
+          type: string
+        title:
+          type: string
+        category:
+          type: string
+        poster:
+          type: string
+          format: byte
+        screenings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Screening'
     Screening:
       type: object
       properties:
@@ -113,6 +156,10 @@ components:
         cinemaHallId:
           type: integer
           format: int64
-        date:
+        startTime:
           type: string
           format: date-time
+        endTime:
+          type: string
+          format: date-time
+

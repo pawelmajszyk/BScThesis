@@ -5,14 +5,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import pl.polsl.screening.api.controller.ScreeningApi;
+import pl.polsl.screening.api.model.MovieScreeningModelApi;
 import pl.polsl.screening.api.model.ScreeningModelApi;
 import pl.polsl.screening.api.model.ScreeningRequestModelApi;
 import pl.polsl.screening.api.model.ScreeningUpdateRequestModelApi;
+import pl.polsl.screening.dto.MovieScreeningDto;
 import pl.polsl.screening.dto.ScreeningDto;
 import pl.polsl.screening.mapper.ScreeningMapper;
 import pl.polsl.screening.service.ScreeningService;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +53,17 @@ public class ScreeningController implements ScreeningApi {
         return new ResponseEntity<>(screeningMapper.mapDtoToModelApi(result), HttpStatus.OK);
     }
 
-//    @Override
+    @Override
+    public ResponseEntity<List<MovieScreeningModelApi>> getScreeningByCinemaId(Long id, OffsetDateTime time) {
+        List<MovieScreeningModelApi> result = service.getScreeningsForCinema(id, time).stream()
+                .map(screeningMapper::mapDtoToModelApi)
+                .collect(Collectors.toList());
+
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //    @Override
 //    public ResponseEntity<List<ScreeningModelApi>> getScreenings() {
 //        List<ScreeningDto> result = service.findScreenings();
 //

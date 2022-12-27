@@ -11,7 +11,27 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MovieRequest'
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                director:
+                  type: string
+                category:
+                  type: string
+                ageCategory:
+                  type: string
+                length:
+                  type: string
+                poster:
+                  type: string
+                  format: binary
+                trailerLink:
+                  type: string
+                shortDescription:
+                  type: string
       responses:
         '200':
           description: ''
@@ -34,6 +54,11 @@ paths:
             type: integer
             format: int32
             default: 0
+        - name: complete
+          in: query
+          schema:
+            type: boolean
+            default: true
       operationId: getMovieList
       description: returns movie list
       responses:
@@ -108,6 +133,10 @@ components:
         poster:
           type: string
           format: binary
+        trailerLink:
+          type: string
+        shortDescription:
+          type: string
     MovieFindResult:
       type: object
       properties:
@@ -148,6 +177,10 @@ components:
           format: byte
         isEnabled:
           type: boolean
+        trailerLink:
+          type: string
+        shortDescription:
+          type: string
     Category:
       type: string
       enum:
