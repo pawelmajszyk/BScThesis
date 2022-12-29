@@ -1,4 +1,3 @@
-
 spring:
   application:
     name: Screening
@@ -20,8 +19,6 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:28080/auth/realms/cinema/protocol/openid-connect/certs
-
-
 eureka:
   client:
     serviceUrl:

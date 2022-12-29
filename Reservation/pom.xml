@@ -187,24 +187,6 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>cinemahall</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <generatorName>spring</generatorName>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi/cinemahall.yml</inputSpec>
-                            <output>${project.build.directory}/generated-sources</output>
-                            <modelPackage>${project.groupId}.cinemahall.api.model</modelPackage>
-                            <apiPackage>${project.groupId}.cinemahall.api.controller</apiPackage>
-                            <modelNameSuffix>ModelApi</modelNameSuffix>
-                            <generateApis>true</generateApis>
-                            <configOptions>
-                                <interfaceOnly>true</interfaceOnly>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>screening</id>
                         <goals>
                             <goal>generate</goal>

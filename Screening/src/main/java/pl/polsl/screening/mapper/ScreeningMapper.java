@@ -1,8 +1,6 @@
 package pl.polsl.screening.mapper;
 
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 import pl.polsl.movie.api.model.MovieModelApi;
 import pl.polsl.screening.api.model.MovieScreeningModelApi;
 import pl.polsl.screening.api.model.ScreeningModelApi;
@@ -11,6 +9,9 @@ import pl.polsl.screening.api.model.ScreeningUpdateRequestModelApi;
 import pl.polsl.screening.dto.MovieScreeningDto;
 import pl.polsl.screening.dto.ScreeningDto;
 import pl.polsl.screening.entity.Screening;
+
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ScreeningMapper {
@@ -25,4 +26,11 @@ public interface ScreeningMapper {
     MovieScreeningDto mapMovieApiToDto(MovieModelApi movieModelApi);
 
     MovieScreeningModelApi mapDtoToModelApi(MovieScreeningDto screeningDto);
+
+    @AfterMapping
+    default void afterAgreementDtoTOAgreementMapping(@MappingTarget MovieScreeningModelApi movieScreeningModelApi) {
+       movieScreeningModelApi.setScreenings(movieScreeningModelApi.getScreenings().stream()
+               .sorted(Comparator.comparing(ScreeningModelApi::getStartTime))
+               .collect(Collectors.toList()));
+    }
 }

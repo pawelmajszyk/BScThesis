@@ -5,20 +5,40 @@ info:
 paths:
   /reservation:
     post:
-      operationId: createCinemaHall
-      description: creates cinemaHall
+      operationId: createReservetion
+      description: creates reservation
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CinemaHallRequest'
+              $ref: '#/components/schemas/ReservationRequest'
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CinemaHall'
+                $ref: '#/components/schemas/Reservation'
+  /reservation/{id}:
+    parameters:
+          - name: id
+            in: path
+            schema:
+              type: integer
+              format: int64
+            required: true
+    get:
+      operationId: getReservationsForScreening
+      description: returns reservations for screening
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
 #  /details/{id}:
 #    parameters:
 #      - name: id
@@ -64,7 +84,7 @@ components:
           items:
             type:  integer
             format: int64
-    ReservationResponse:
+    Reservation:
       type: object
       properties:
         id:
