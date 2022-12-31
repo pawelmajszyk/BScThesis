@@ -2,6 +2,7 @@ package pl.polsl.screening.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -17,7 +18,7 @@ public class FeignClientInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate requestTemplate) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null ) {
+        if (authentication != null  && !(authentication instanceof AnonymousAuthenticationToken)) {
             JwtAuthenticationToken token = (JwtAuthenticationToken) authentication;
             String tokenValue = token.getToken().getTokenValue();
             requestTemplate.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE, tokenValue));

@@ -2,6 +2,7 @@ package pl.polsl.screening.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,7 @@ public class CinemaSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/screening/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

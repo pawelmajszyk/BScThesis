@@ -32,8 +32,7 @@ public class CustomerController implements CustomerApi {
     private final FindResultMapper findResultMapper;
 
     @Override
-   // @RolesAllowed({"admin"})
-    @CrossOrigin
+    @RolesAllowed({"admin", "manager", "worker"})
     public ResponseEntity<WorkerResponseModelApi> createCustomer(UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 
@@ -43,8 +42,7 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-//    @RolesAllowed({"admin"})
-    @CrossOrigin
+    @RolesAllowed({"admin", "manager", "worker"})
     public ResponseEntity<WorkerResponseModelApi> getSingleCustomer(Long id) {
         UserDto userDto = customerService.getSingleCustomer(id);
 
@@ -52,8 +50,7 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-//    @RolesAllowed({"admin"})
-    @CrossOrigin
+    @RolesAllowed({"admin", "manager", "worker"})
     public ResponseEntity<WorkerFindResultModelApi> getCustomers(Long limit, Integer page) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)

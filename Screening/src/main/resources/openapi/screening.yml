@@ -99,6 +99,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MovieScreening'
+  /screening/movie/detail/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          format: int64
+        required: true
+    get:
+      summary: Get screening by screeningId
+      operationId: getScreeningBySreeningId
+      responses:
+        '200':
+          description: 'screening detail'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/MovieScreening'
 components:
   schemas:
     ScreeningUpdateRequest:

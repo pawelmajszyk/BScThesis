@@ -14,6 +14,7 @@ import pl.polsl.screening.dto.ScreeningDto;
 import pl.polsl.screening.mapper.ScreeningMapper;
 import pl.polsl.screening.service.ScreeningService;
 
+import javax.annotation.security.RolesAllowed;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +27,13 @@ public class ScreeningController implements ScreeningApi {
     private final ScreeningMapper screeningMapper;
 
     @Override
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<ScreeningModelApi> updateScreening(Long id, ScreeningUpdateRequestModelApi screeningUpdateRequestModelApi) {
         return ScreeningApi.super.updateScreening(id, screeningUpdateRequestModelApi);
     }
 
     @Override
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<ScreeningModelApi> createScreening(ScreeningRequestModelApi screeningRequestModelApi) {
         ScreeningDto screeningDto = screeningMapper.mapModelApiToDto(screeningRequestModelApi);
 
@@ -40,6 +43,7 @@ public class ScreeningController implements ScreeningApi {
     }
 
     @Override
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<ScreeningModelApi> deleteScreening(Long id) {
         ScreeningDto result = service.deleteScreening(id);
 
@@ -61,6 +65,13 @@ public class ScreeningController implements ScreeningApi {
 
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<MovieScreeningModelApi> getScreeningBySreeningId(Long id) {
+        MovieScreeningDto result = service.getScreeningMovieById(id);
+
+        return new ResponseEntity<>(screeningMapper.mapDtoToModelApi(result), HttpStatus.OK);
     }
 
     //    @Override

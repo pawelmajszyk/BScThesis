@@ -32,8 +32,7 @@ public class WorkerController implements WorkerApi {
     private final FindResultMapper findResultMapper;
 
     @Override
-    @RolesAllowed({"admin"})
-    @CrossOrigin
+    @RolesAllowed({"admin", "manager"})
     public ResponseEntity<WorkerResponseModelApi> createWorker(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 
@@ -44,8 +43,7 @@ public class WorkerController implements WorkerApi {
 
 
     @Override
-    @RolesAllowed({"admin", "manager"})
-    @CrossOrigin
+    @RolesAllowed({"admin", "manager", "worker"})
     public ResponseEntity<WorkerResponseModelApi> getSingleWorker(Long id) {
         UserDto userDto = workerService.getSingleWorker(id);
 
@@ -53,8 +51,7 @@ public class WorkerController implements WorkerApi {
     }
 
     @Override
-    @RolesAllowed({"admin"})
-    @CrossOrigin
+    @RolesAllowed({"admin", "manager"})
     public ResponseEntity<WorkerFindResultModelApi> getWorkers(Long limit, Integer page, Long cinemaId) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)
@@ -70,7 +67,6 @@ public class WorkerController implements WorkerApi {
 
     @Override
     @RolesAllowed({"manager"})
-    @CrossOrigin
     public ResponseEntity<WorkerFindResultModelApi> getWorkersForCinema(Long limit, Integer page) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)

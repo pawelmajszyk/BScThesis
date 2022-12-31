@@ -27,6 +27,7 @@ public class Movie {
     @Enumerated(value = EnumType.STRING)
     private AgeCategory ageCategory;
 
+    @Column(name = "description", length = 200041)
     private String description;
     private String shortDescription;
     private Long length;

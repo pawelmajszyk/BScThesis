@@ -37,7 +37,6 @@ public class AdminController implements AdminApi {
 
     @Override
     @RolesAllowed({"admin"})
-    @CrossOrigin
     public ResponseEntity<AdminResponseModelApi> createAdmin(UserRequestModelApi adminModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(adminModelApi);
 
@@ -48,7 +47,6 @@ public class AdminController implements AdminApi {
 
     @Override
     @RolesAllowed({"admin"})
-    @CrossOrigin
     public ResponseEntity<AdminResponseModelApi> getSingleAdmin(Long id) {
         UserDto userDto = adminService.getSingleAdmin(id);
 
@@ -57,7 +55,6 @@ public class AdminController implements AdminApi {
 
     @Override
     @RolesAllowed({"admin"})
-    @CrossOrigin
     public ResponseEntity<AdminFindResultModelApi> getAdmins(Long limit, Integer page) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)
@@ -73,7 +70,6 @@ public class AdminController implements AdminApi {
 
     @Override
     @RolesAllowed({"admin"})
-    @CrossOrigin
     public ResponseEntity<WorkerResponseModelApi> updateUser(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 

@@ -55,7 +55,7 @@ public class AdminService {
     public FindResultDto<UserDto> findAdmins(SearchDto searchDto) {
         PageRequest pageRequest = PageRequest.of(searchDto.getPage(), Math.toIntExact(searchDto.getLimit()));
 
-        Page<Admin> page = adminRepository.findAll(pageRequest);
+        Page<Admin> page = adminRepository.findAllByIsEnabledTrue(pageRequest);
 
         return FindResultDto.<UserDto>builder()
                 .totalCount(page.getTotalElements())

@@ -19,6 +19,8 @@ import pl.polsl.movie.mapper.FindResultMapper;
 import pl.polsl.movie.mapper.MovieMapper;
 import pl.polsl.movie.service.MovieService;
 
+import javax.annotation.security.RolesAllowed;
+
 @RequiredArgsConstructor
 @RestController
 public class MovieController implements MovieApi {
@@ -29,6 +31,7 @@ public class MovieController implements MovieApi {
 
     @SneakyThrows
     @Override
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<MovieModelApi> createMovie(String title, String description, String director, String category, String ageCategory, String length, MultipartFile poster, String trailerLink, String shortDescription) {
         MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory, length, trailerLink, shortDescription);
 
@@ -40,6 +43,7 @@ public class MovieController implements MovieApi {
     }
 
     @Override
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<MovieModelApi> deletesSingleMovie(Long id) {
         MovieDto movieDto = movieService.deleteMovie(id);
 
@@ -75,6 +79,7 @@ public class MovieController implements MovieApi {
 
 
     @Override
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<MovieModelApi> updateMovie(Long id, String title, String description, String director, Long length, CategoryModelApi category, AgeCategoryModelApi ageCategory, MultipartFile poster, String trailerLink, String shortDescription) {
         return MovieApi.super.updateMovie(id, title, description, director, length, category, ageCategory, poster, trailerLink, shortDescription);
     }

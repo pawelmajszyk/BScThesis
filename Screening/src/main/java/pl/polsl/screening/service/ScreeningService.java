@@ -110,4 +110,15 @@ public class ScreeningService {
             throw new MovieMissingException();
         }
     }
+
+    public MovieScreeningDto getScreeningMovieById(Long id) {
+        Screening screening = screeningRepository.findById(id).orElseThrow(ScreeningMissingException::new);
+        MovieModelApi singleMovie = movieClient.getSingleMovie(screening.getMovieId());
+
+        MovieScreeningDto movieScreeningDto = screeningMapper.mapMovieApiToDto(singleMovie);
+
+        movieScreeningDto.setScreenings(List.of(screeningMapper.mapEntityToDto(screening)));
+
+        return movieScreeningDto;
+    }
 }

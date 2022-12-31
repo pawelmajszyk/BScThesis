@@ -30,7 +30,6 @@ public class ManagerController implements ManagerApi {
 
     @Override
     @RolesAllowed({"admin"})
-    @CrossOrigin
     public ResponseEntity<WorkerResponseModelApi> createManager(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 
@@ -41,7 +40,6 @@ public class ManagerController implements ManagerApi {
 
     @Override
     @RolesAllowed({"admin", "manager"})
-    @CrossOrigin
     public ResponseEntity<WorkerResponseModelApi> getSingleManager(Long id) {
         UserDto userDto = workerService.getSingleManager(id);
 
@@ -50,7 +48,6 @@ public class ManagerController implements ManagerApi {
 
     @Override
     @RolesAllowed({"admin"})
-    @CrossOrigin
     public ResponseEntity<WorkerFindResultModelApi> getManagers(Long limit, Integer page) {
         SearchDto searchDto = SearchDto.builder()
                 .limit(limit)

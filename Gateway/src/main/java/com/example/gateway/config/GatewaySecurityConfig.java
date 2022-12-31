@@ -16,7 +16,10 @@ public class GatewaySecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .authorizeExchange()
-                .pathMatchers(HttpMethod.GET, "/CINEMA/cinema").permitAll() // Admin should be able to delete
+                .pathMatchers(HttpMethod.GET, "/CINEMA/cinema").permitAll()
+                .pathMatchers(HttpMethod.GET,"/MOVIE//movie").permitAll()
+                .pathMatchers(HttpMethod.GET, "/SCREENING/screening/**").permitAll()
+                .pathMatchers(HttpMethod.GET, "/MOVIE/movie/{*spring}").permitAll()// Admin should be able to delete
                 .anyExchange().authenticated()
                 .and()
                 .cors().configurationSource(request -> {

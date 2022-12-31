@@ -58,7 +58,6 @@ public class CinemaHallController implements IdApi, DetailsApi, DefaultApi {
     }
 
     @Override
-    @RolesAllowed({"admin", "manager", "customer"})
     public ResponseEntity<CinemaHallModelApi> getCinemaHall(Long id) {
         CinemaHallDto cinemaHallDto = cinemaHallService.findById(id);
 
@@ -66,7 +65,6 @@ public class CinemaHallController implements IdApi, DetailsApi, DefaultApi {
     }
 
     @Override
-    @RolesAllowed({"admin", "manager", "customer"})
     public ResponseEntity<List<CinemaHallModelApi>> getCinemaHalls(Long id) {
         List<CinemaHallModelApi> result = cinemaHallService.findAllForCinema(id).stream()
                 .map(cinemaHallMapper::mapDtoToModelApi)
