@@ -79,8 +79,10 @@ public class MovieController implements MovieApi {
 
 
     @Override
-    @RolesAllowed({"manager", "admin", "worker"})
-    public ResponseEntity<MovieModelApi> updateMovie(Long id, String title, String description, String director, Long length, CategoryModelApi category, AgeCategoryModelApi ageCategory, MultipartFile poster, String trailerLink, String shortDescription) {
-        return MovieApi.super.updateMovie(id, title, description, director, length, category, ageCategory, poster, trailerLink, shortDescription);
-    }
+    public ResponseEntity<MovieModelApi> updateMovie(Long id, String title, String description, String director, String category, String ageCategory, String length, MultipartFile poster, String trailerLink, String shortDescription) {
+        MovieDto movieDto = mapper.mapModelApiToDto(title, description, director, category, ageCategory, length, trailerLink, shortDescription);
+
+        MovieDto result = movieService.updateMovie(id, movieDto);
+
+        return new ResponseEntity<>(mapper.mapDtoToModelApi(result), HttpStatus.OK);    }
 }

@@ -99,12 +99,32 @@ paths:
                 $ref: '#/components/schemas/Movie'
     put:
       operationId: updateMovie
-      description: update movie
+      description: updates movie
       requestBody:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MovieRequest'
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                director:
+                  type: string
+                category:
+                  type: string
+                ageCategory:
+                  type: string
+                length:
+                  type: string
+                poster:
+                  type: string
+                  format: binary
+                trailerLink:
+                  type: string
+                shortDescription:
+                  type: string
       responses:
         '200':
           description: ''
@@ -185,7 +205,20 @@ components:
       type: string
       enum:
         - HORROR
+        - COMEDY
+        - THRILLER
+        - ROMANTIC COMEDY
+        - ANIMATION
+        - MILITARY
+        - CRIME
+        - FANTASY
+        - SCI-FI
     AgeCategory:
       type: string
       enum:
         - PG13
+        - G_General_Audiences
+        - PG_Parental_Guidance_Suggested
+        - PG-13_Parents_Strongly_Cautioned
+        - R_Restricted
+        - NC_17_Adults_Only

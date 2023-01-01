@@ -50,6 +50,10 @@ public class MovieService {
 
         edditedMovie.setId(id);
 
+        if(movieDto.getPoster() == null) {
+            edditedMovie.setPoster(movie.getPoster());
+        }
+
         return mapper.mapEntityToDto(movieRepository.save(edditedMovie));
     }
 
