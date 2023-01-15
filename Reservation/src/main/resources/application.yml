@@ -18,7 +18,7 @@ spring:
     initialize: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       hbm2dll:
         create_namespaces: true
         default_schema: adapterborder
@@ -34,7 +34,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:28080/auth/realms/cinema/protocol/openid-connect/certs
+          jwk-set-uri: ${KEYLOCAK_URI:http://localhost:28080}/auth/realms/cinema/protocol/openid-connect/certs
 eureka:
   client:
     serviceUrl:

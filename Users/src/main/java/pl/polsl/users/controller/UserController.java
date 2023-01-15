@@ -26,7 +26,7 @@ public class UserController implements UserApi {
     private final WorkerMapper workerMapper;
 
     @Override
-    @RolesAllowed({"admin", "manager", "worker"})
+    @RolesAllowed({"admin", "manager", "worker", "customer"})
     public ResponseEntity<WorkerResponseModelApi> getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -37,7 +37,7 @@ public class UserController implements UserApi {
     }
 
     @Override
-    @RolesAllowed({"admin", "manager", "worker"})
+    @RolesAllowed({"admin", "manager", "worker", "customer"})
     public ResponseEntity<WorkerResponseModelApi> deleteUSer(Long id) {
         String response = userService.deleteUser(id);
 
@@ -45,7 +45,7 @@ public class UserController implements UserApi {
     }
 
     @Override
-    @RolesAllowed({"admin", "manager", "worker"})
+    @RolesAllowed({"admin", "manager", "worker", "customer"})
     public ResponseEntity<WorkerResponseModelApi> resetPassword(Long id) {
         UserDto userDto = userService.updatePassword(id, null);
 
@@ -53,7 +53,7 @@ public class UserController implements UserApi {
     }
 
     @Override
-    @RolesAllowed({"admin", "manager", "worker"})
+    @RolesAllowed({"admin", "manager", "worker", "customer"})
     public ResponseEntity<WorkerResponseModelApi> selfUpdateUser(UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 
@@ -66,6 +66,7 @@ public class UserController implements UserApi {
     }
 
     @Override
+    @RolesAllowed({"admin", "manager", "worker", "customer"})
     public ResponseEntity<WorkerResponseModelApi> selfResetPassword() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();

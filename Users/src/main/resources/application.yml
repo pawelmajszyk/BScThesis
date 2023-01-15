@@ -1,3 +1,7 @@
+users:
+  secret-key: ${SECRET:188f181e-35f9-4913-9c8a-13e62ed588ac}
+keycloak:
+  uri: ${KEYCLOAK:localhost}
 spring:
   application:
     name: Users
@@ -6,14 +10,14 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     schemaName: ${spring.application.name}
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DATABASE:Cinema}?currentSchema=users&stringtype=unspecified&ApplicationName=${spring.application.name}&reWriteBatchedInserts=true
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DATABASE:Cinema}?currentSchema=public&stringtype=unspecified&ApplicationName=${spring.application.name}&reWriteBatchedInserts=true
     username: ${DBUSER:cinema}
     password: ${DBPASSWORD:cinema}
     # if true initializes db using sql scripts
     initialize: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       hbm2dll:
         create_namespaces: true
         default_schema: adapterborder
@@ -28,7 +32,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:28080/auth/realms/cinema/protocol/openid-connect/certs
+          jwk-set-uri: ${KEYLOCAK_URI:http://localhost:28080}/auth/realms/cinema/protocol/openid-connect/certs
 eureka:
   client:
     serviceUrl:

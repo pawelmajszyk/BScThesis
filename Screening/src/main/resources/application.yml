@@ -6,7 +6,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     schemaName: ${spring.application.name}
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DATABASE:Cinema}?currentSchema=screening&stringtype=unspecified&ApplicationName=${spring.application.name}&reWriteBatchedInserts=true
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DATABASE:Cinema}?currentSchema=public&stringtype=unspecified&ApplicationName=${spring.application.name}&reWriteBatchedInserts=true
     username: ${DBUSER:cinema}
     password: ${DBPASSWORD:cinema}
     # if true initializes db using sql scripts
@@ -18,7 +18,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:28080/auth/realms/cinema/protocol/openid-connect/certs
+          jwk-set-uri: ${KEYLOCAK_URI:http://localhost:28080}/auth/realms/cinema/protocol/openid-connect/certs
 eureka:
   client:
     serviceUrl:

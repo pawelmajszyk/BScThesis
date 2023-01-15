@@ -92,6 +92,11 @@ public class KeycloakService {
             userResource.roles().realmLevel()
                     .add(Arrays.asList(role));
         } catch (Exception e) {
+            System.out.println("----------------------");
+            System.out.println(e);
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.out.println("----------------------");
             throw new DuplicateUserException();
         }
 

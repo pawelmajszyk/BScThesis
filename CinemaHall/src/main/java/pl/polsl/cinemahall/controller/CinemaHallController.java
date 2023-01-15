@@ -42,7 +42,7 @@ public class CinemaHallController implements IdApi, DetailsApi, DefaultApi {
     }
 
     @Override
-    @RolesAllowed({"manager", "admin"})
+    @RolesAllowed({"manager", "admin", "worker"})
     public ResponseEntity<SeatModelApi> changeSeatState(Long id, SeatStateModelApi state) {
         SeatDto seatDto = cinemaHallService.changeSeatState(id, seatMapper.mapModelApiToDto(state));
 
@@ -74,7 +74,7 @@ public class CinemaHallController implements IdApi, DetailsApi, DefaultApi {
     }
 
     @Override
-    @RolesAllowed({ "manager", "customer"})
+    @RolesAllowed({ "manager", "worker"})
     public ResponseEntity<List<CinemaHallModelApi>> getCinemaHallsForWorker() {
         List<CinemaHallModelApi> result = cinemaHallService.findAllForWorker().stream()
                 .map(cinemaHallMapper::mapDtoToModelApi)

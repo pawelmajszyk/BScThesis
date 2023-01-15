@@ -86,6 +86,10 @@ public class AdminService {
     public UserDto mapAdmin(User user) {
         Admin admin =  (Admin) user;
 
-        return adminMapper.mapEntityToDto(admin);
+        UserRepresentation keycloackUser = keycloakService.getUser(admin.getUserId());
+
+        UserDto userDto = adminMapper.mapEntityToDto(admin);
+
+        return userMapper.mapModelApiToDto(keycloackUser, userDto);
     }
 }

@@ -69,7 +69,7 @@ public class AdminController implements AdminApi {
     }
 
     @Override
-    @RolesAllowed({"admin"})
+    @RolesAllowed({"admin", "manager", "worker"})
     public ResponseEntity<WorkerResponseModelApi> updateUser(Long id, UserRequestModelApi userRequestModelApi) {
         UserDto userDto = userMapper.mapModelApiToDto(userRequestModelApi);
 

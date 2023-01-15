@@ -10,11 +10,137 @@ services:
       DB_DATABASE: keycloack
       DB_USER: keycloack
       DB_PASSWORD: keycloack
-      # KEYCLOAK_USER: admin
-      # KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_FRONTEND_URL: http://localhost:28080/auth
     image: jboss/keycloak:11.0.3
     ports:
       - "28080:8080"
+
+  front:
+    image: luklojad123/cinema-front:latest
+    ports:
+      - 4200:80
+  config-service:
+    image: luklojad123/config-server:latest
+    ports:
+      - 8888:8080
+
+  discovery-service:
+    depends_on:
+      - config-service
+    image: luklojad123/discovery-service:latest
+    environment:
+      - ConfigService=config-service 
+    ports:
+      - 8889:8887
+
+  gateway-service:
+    depends_on:
+      - config-service
+      - discovery-service
+    image: luklojad123/gateway-service:latest
+    environment:
+      - ConfigService=config-service 
+      - KEYCLOAK=keycloak
+      - EUREKA_URI=http://discovery-service:8887/eureka
+    ports:
+      - 8890:8118
+
+  cinema:
+    image: luklojad123/cinema:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+    ports:
+      - 8080:8080
+  cinemahall:
+    image: luklojad123/cinemahall:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb
+      - DB_PORT=5432
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+    ports:
+      - 8096:8080
+
+  movie:
+    image: luklojad123/movie:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb  
+      - DB_PORT=5432
+
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+    ports:
+      - 8095:8080
+
+  reservation:
+    image: luklojad123/reservation:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+    ports:
+      - 8094:8080
+
+  screening:
+    image: luklojad123/screening:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+    ports:
+      - 8093:8080
+
+  schedule:
+    image: luklojad123/schedule:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+    ports:
+      - 8092:8080
+
+  users:
+    image: luklojad123/users:latest
+    environment:
+      - POSTGRES_DB=Cinema
+      - POSTGRES_USER=cinema
+      - POSTGRES_PASSWORD=cinema
+      - ConfigService=config-service
+      - DB_HOST=postgresdb
+      - KEYCLOAK=keycloak
+      - EUREKA_URI=http://discovery-service:8887/eureka
+      - KEYLOCAK_URI=http://keycloak:8080
+      - SECRET=f8be504d-33bb-4963-836a-3ef11c47e2d8
+    ports:
+      - 8091:8080
 
   postgresdb:
     image: postgres
@@ -22,10 +148,9 @@ services:
       - POSTGRES_DB=Cinema
       - POSTGRES_USER=cinema
       - POSTGRES_PASSWORD=cinema
-  
-
     ports:
       - 5432:5432
+
   keycloackDB:
     image: postgres:latest
     environment:
@@ -33,6 +158,6 @@ services:
       - POSTGRES_USER=keycloack
       - POSTGRES_PASSWORD=keycloack
     ports:
-      - 5433:5432
+      - 5431:5432
 
 
